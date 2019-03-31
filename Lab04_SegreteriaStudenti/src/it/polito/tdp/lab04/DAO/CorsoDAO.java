@@ -11,7 +11,9 @@ import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Studente;
 
 public class CorsoDAO {
-
+	
+	StudenteDAO studenteDAO = new StudenteDAO();
+	
 	/*
 	 * Ottengo tutti i corsi salvati nel Db
 	 */
@@ -24,7 +26,6 @@ public class CorsoDAO {
 		try {
 			Connection conn = ConnectDB.getConnection();
 			PreparedStatement st = conn.prepareStatement(sql);
-
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next()) {
@@ -34,12 +35,10 @@ public class CorsoDAO {
 				String nome = rs.getString("nome");
 				int periodoDidattico = rs.getInt("pd");
 
-				System.out.println(codins + " " + numeroCrediti + " " + nome + " " + periodoDidattico);
-
-				// Crea un nuovo JAVA Bean Corso
-				// Aggiungi il nuovo oggetto Corso alla lista corsi
+				Corso corso = new Corso(codins, numeroCrediti, nome, periodoDidattico);
+				corsi.add(corso);
 			}
-
+			conn.close();
 			return corsi;
 
 		} catch (SQLException e) {
@@ -52,22 +51,74 @@ public class CorsoDAO {
 	 * Dato un codice insegnamento, ottengo il corso
 	 */
 	public void getCorso(Corso corso) {
-		// TODO
+		try {
+			Connection conn = ConnectDB.getConnection();
+			String query = "SELECT * FROM corso WHERE codins = ?";
+		
+			PreparedStatement st = conn.prepareStatement(query);
+			st.setString(1, corso.getCodins());
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				
+			}
+			
+		} catch(SQLException e) {
+			throw new RuntimeException("Errore Db");
+		}
 	}
 
 	/*
 	 * Ottengo tutti gli studenti iscritti al Corso
 	 */
-	public void getStudentiIscrittiAlCorso(Corso corso) {
-		// TODO
-	}
+	public String getStudentiIscrittiAlCorso(Corso corso) {
+try {
+		Connection conn = ConnectDB.getConnection();
+			
+			String query = "SELECT * FROM iscrizione WHERE codins = ?";
+			
+			PreparedStatement st = conn.prepareStatement(query);
+			st.setString(1, corso.getCodins());
+			ResultSet rs = st.executeQuery();
+			
+			String result="";
 
-	/*
-	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
-	 */
-	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
-		// TODO
-		// ritorna true se l'iscrizione e' avvenuta con successo
-		return false;
+			while (rs.next()) {
+			/*	String sql = "SELECT * FROM studente WHERE matricola = ?";
+				Connection con = ConnectDB.getConnection();
+				PreparedStatement stat = con.prepareStatement(sql);
+				st.setInt(1, rs.getInt("matricola"));
+				ResultSet resultSet = st.executeQuery();
+				*/
+				
+				result+=rs.getInt("matricola")+"\n";
+			}
+			conn.close();
+			return result;
+			
+		} catch(SQLException e) {
+			throw new RuntimeException("Errore Db");
+		}
+	}
+	
+	public String getCodiceCorso(String nomeCorso) {
+		try{
+			Connection conn = ConnectDB.getConnection();
+			String query = " SELECT * FROM corso WHERE nome=? ";
+			PreparedStatement st = conn.prepareStatement(query);
+			st.setString(1, nomeCorso);
+			ResultSet rs = st.executeQuery();
+			
+			String codice="";
+			if(rs.next()) {
+				codice = rs.getString("codins");
+			}
+			conn.close();
+			return codice;
+	
+		}
+		catch(SQLException e) {
+			throw new RuntimeException("Errore DB");
+		}
 	}
 }
