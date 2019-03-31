@@ -84,19 +84,20 @@ try {
 			String result="";
 
 			while (rs.next()) {
-			/*	String sql = "SELECT * FROM studente WHERE matricola = ?";
-				Connection con = ConnectDB.getConnection();
-				PreparedStatement stat = con.prepareStatement(sql);
-				st.setInt(1, rs.getInt("matricola"));
-				ResultSet resultSet = st.executeQuery();
-				*/
+				String sql = "SELECT * FROM studente WHERE matricola = ?";
+				PreparedStatement stat = conn.prepareStatement(sql);
+				stat.setInt(1, rs.getInt("matricola"));
+				ResultSet rs2 = stat.executeQuery();
 				
-				result+=rs.getInt("matricola")+"\n";
+				if(rs2.next()) {
+				result+=rs.getInt("matricola")+"                     "+rs2.getString("cognome")+"                      "+rs2.getString("nome")+"                        "+rs2.getString("CdS")+"\n";
+				}
 			}
 			conn.close();
 			return result;
 			
 		} catch(SQLException e) {
+			e.printStackTrace();
 			throw new RuntimeException("Errore Db");
 		}
 	}
@@ -115,6 +116,28 @@ try {
 			}
 			conn.close();
 			return codice;
+	
+		}
+		catch(SQLException e) {
+			throw new RuntimeException("Errore DB");
+		}
+	}
+	
+	
+	public String getNomeCorso(String codiceCorso) {
+		try{
+			Connection conn = ConnectDB.getConnection();
+			String query = " SELECT * FROM corso WHERE codins=? ";
+			PreparedStatement st = conn.prepareStatement(query);
+			st.setString(1, codiceCorso);
+			ResultSet rs = st.executeQuery();
+			
+			String nome="";
+			if(rs.next()) {
+				nome = rs.getString("nome");
+			}
+			conn.close();
+			return nome;
 	
 		}
 		catch(SQLException e) {

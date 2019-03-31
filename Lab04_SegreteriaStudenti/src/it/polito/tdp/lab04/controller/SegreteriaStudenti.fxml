@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.lab04.controller.SegreteriaStudentiController">
    <top>
@@ -53,10 +54,13 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="btnStudente" mnemonicParsing="false" onAction="#doCercaStudente" text="OK">
+                  <Button fx:id="btnStudente" mnemonicParsing="false" onAction="#doCercaStudente" style="-fx-background-color: Green;" text="✔" textFill="WHITE">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
                   </Button>
                   <TextField fx:id="txtFieldNome" editable="false">
                      <HBox.margin>

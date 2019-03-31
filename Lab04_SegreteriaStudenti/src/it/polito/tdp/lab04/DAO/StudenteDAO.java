@@ -48,13 +48,22 @@ public class StudenteDAO {
 			String result="";
 			
 			while (rs.next()) {
-				result+=rs.getString("codins")+"\n";
+				String query = "SELECT * FROM corso WHERE codins = ?";
+				PreparedStatement stat = conn.prepareStatement(query);
+				stat.setString(1, rs.getString("codins"));
+				ResultSet rs2 = stat.executeQuery();
+				
+				if (rs2.next()) {
+					result+=rs.getString("codins")+"           "+rs2.getInt("crediti")+"             "+rs2.getString("nome")+"            "+rs2.getInt("pd")+"\n";
+				}
+				
 			}
 			conn.close();
 			return result;
 			
 			
 		} catch(SQLException e) {
+			e.printStackTrace();
 			throw new RuntimeException("Errore DB");
 		}
 	}

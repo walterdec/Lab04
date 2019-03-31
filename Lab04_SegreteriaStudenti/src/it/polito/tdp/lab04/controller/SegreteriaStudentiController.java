@@ -96,10 +96,10 @@ public class SegreteriaStudentiController {
     		String codins = corsoDAO.getCodiceCorso(nomeCorsoSelezionato);
     		
     		if(studenteDAO.isIscritto(matricola, codins)) {
-    			txtArea.appendText("Lo studente "+studenteDAO.getNomeCognomebyMatricola(matricola)+" ("+matricola+")"+" risulta iscritto al corso "+codins+".");
+    			txtArea.appendText("Lo studente "+studenteDAO.getNomeCognomebyMatricola(matricola)+" ("+matricola+")"+" risulta iscritto al corso "+corsoDAO.getNomeCorso(codins)+" ("+codins+").");
     		}
     		else {
-    			txtArea.appendText("Lo studente "+studenteDAO.getNomeCognomebyMatricola(matricola)+" ("+matricola+")"+" non risulta iscritto al corso "+codins+".");
+    			txtArea.appendText("Lo studente "+studenteDAO.getNomeCognomebyMatricola(matricola)+" ("+matricola+")"+" NON risulta iscritto al corso "+corsoDAO.getNomeCorso(codins)+" ("+codins+").");
     		}
     	}
     }
@@ -149,10 +149,10 @@ public class SegreteriaStudentiController {
     		int matricola = Integer.parseInt(txtFieldMatricola.getText());
     		boolean iscrizioneConSuccesso = model.iscrivi(matricola, nomeCorsoSelezionato);
     		if(iscrizioneConSuccesso) {
-    			txtArea.setText("Studente iscritto correttamente al corso");
+    			txtArea.setText("Studente "+studenteDAO.getNomeCognomebyMatricola(matricola)+" ("+matricola+") iscritto correttamente al corso "+nomeCorsoSelezionato+" ("+corsoDAO.getCodiceCorso(nomeCorsoSelezionato)+").");
     		}
     		else {
-    			txtArea.setText("Studente già iscritto precedentemente al corso");
+    			txtArea.setText("Studente "+studenteDAO.getNomeCognomebyMatricola(matricola)+" ("+matricola+") già iscritto precedentemente al corso "+nomeCorsoSelezionato+" ("+corsoDAO.getCodiceCorso(nomeCorsoSelezionato)+").");
     		}
     	} 
     	else {
